@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>諾貝爾生物醫學獎全球教學資源入口網頁</title>
+  <!-- 載入 Google Fonts: Playfair Display (標題用) 與 Noto Sans TC (內文用) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    /* 核心變數設定 - 奢華奢美諾貝爾金/暗黑風格 */
+    :root {
+      --bg: #0b0f19;
+      --card-bg: rgba(20, 27, 45, 0.65);
+      --card-border: rgba(212, 175, 55, 0.15);
+      --card-border-hover: rgba(212, 175, 55, 0.6);
+      --gold-light: #f3e5ab;
+      --gold: #d4af37;
+      --gold-dark: #aa7c11;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --glow: rgba(212, 175, 55, 0.15);
+      --glow-hover: rgba(212, 175, 55, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: "Noto Sans TC", sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      /* 背景流光效果 */
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(17, 24, 39, 0.9) 0%, rgba(11, 15, 25, 1) 90%),
+        radial-gradient(circle at 90% 10%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 10% 80%, rgba(30, 58, 138, 0.1) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* 頂部奢美流光裝飾條 */
+    .top-bar {
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+      width: 100%;
+    }
+
+    /* 主容器 */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header 區塊 */
+    header {
+      padding: 80px 0 60px;
+      text-align: center;
+      position: relative;
+    }
+
+    /* 輝煌裝飾背景 */
+    header::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .logo-container {
+      margin-bottom: 24px;
+      display: inline-block;
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* NobelPrize 圖片美化效果 */
+    .logo-img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--gold);
+      box-shadow: 0 0 30px var(--glow);
+      transition: all 0.5s ease;
+    }
+
+    .logo-container:hover .logo-img {
+      transform: rotate(5deg) scale(1.05);
+      border-color: var(--gold-light);
+      box-shadow: 0 0 40px var(--glow-hover);
+    }
+
+    h1 {
+      font-family: "Playfair Display", "Noto Sans TC", serif;
+      font-size: clamp(2.5rem, 6vw, 4.2rem);
+      font-weight: 700;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--gold-light) 70%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 16px;
+      font-weight: 300;
+      letter-spacing: 1px;
+      line-height: 1.6;
+    }
+
+    .author {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 999px;
+      color: var(--gold-light);
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .author::before {
+      content: "🎓";
+    }
+
+    /* 主要網格區塊 */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 30px;
+      padding: 20px 0 80px;
+    }
+
+    /* 玻璃擬態卡片樣式 */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    /* 卡片背景微光與年份裝飾 */
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle at 100% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+      z-index: 1;
+      pointer-events: none;
+      transition: all 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: var(--card-border-hover);
+      box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.4),
+        0 0 25px rgba(212, 175, 55, 0.15);
+    }
+
+    .card:hover::before {
+      background: radial-gradient(circle at 100% 0%, rgba(212, 175, 55, 0.18) 0%, transparent 75%);
+    }
+
+    /* 年份顯示 */
+    .year-badge {
+      font-family: "Playfair Display", serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: rgba(212, 175, 55, 0.08);
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      line-height: 1;
+      z-index: 0;
+      transition: all 0.4s ease;
+    }
+
+    .card:hover .year-badge {
+      color: rgba(212, 175, 55, 0.22);
+      transform: scale(1.05);
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 24px;
+    }
+
+    /* 年份小標 */
+    .card-year {
+      font-size: 0.95rem;
+      color: var(--gold);
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-year::after {
+      content: "";
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background-color: var(--gold-dark);
+    }
+
+    /* 主題標題 */
+    .card-title {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+      line-height: 1.4;
+      transition: color 0.3s ease;
+    }
+
+    .card:hover .card-title {
+      color: var(--gold-light);
+    }
+
+    /* 主題描述 */
+    .card-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* 按鈕容器 */
+    .card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* 開啟網頁按鈕 (金色實心) */
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+      color: #0b0f19;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    /* 開啟雲端按鈕 (透明金邊) */
+    .btn-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--gold-light);
+      padding: 11px 20px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: var(--gold);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    /* 頁尾 */
+    footer {
+      padding: 50px 0;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      background-color: rgba(7, 10, 17, 0.8);
+      backdrop-filter: blur(8px);
+    }
+
+    footer p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    footer .copyright {
+      color: rgba(212, 175, 55, 0.5);
+      font-weight: 400;
+    }
+
+    /* 浮動動畫 */
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    /* 響應式微調 */
+    @media (max-width: 768px) {
+      header {
+        padding: 50px 0 40px;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding-bottom: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar"></div>
+
+  <div class="container">
+    <header>
+      <div class="logo-container">
+        <!-- 顯示首頁 NobelPrize.jpeg 圖片 -->
+        <img class="logo-img" src="NobelPrize.jpeg" alt="Nobel Prize Medal">
+      </div>
+      <h1>諾貝爾生物醫學獎</h1>
+      <p class="subtitle">彙整 2020 年至 2025 年歷屆諾貝爾生物醫學獎之關鍵科學原理、教案文件、學習單與評量試卷，提供全方位素養導向教學資源門戶。</p>
+      <div class="author">臺北市麗山高中 林獻升老師</div>
+    </header>
+
+    <main class="grid">
+      <!-- 2025 -->
+      <section class="card">
+        <div class="year-badge">2025</div>
+        <div class="card-content">
+          <div class="card-year">2025 NOBEL PRIZE</div>
+          <h2 class="card-title">Treg 免疫調節細胞</h2>
+          <p class="card-desc">探索調節性 T 細胞與 FOXP3 基因如何維持體內免疫平衡，解鎖避免自體免疫疾病與抑制發炎的關鍵機制。</p>
+        </div>
+        <div class="card-actions">
+          <a class="btn-primary" href="https://froglssh.github.io/2025-nobel-treg-page/" target="_blank" rel="noopener">
+            <span>📖 開啟教學網頁</span>
+          </a>
+          <a class="btn-secondary" href="https://drive.google.com/drive/folders/1lUJoz54_FjnnSGUJCArmmFoBI0HYNfZJ?usp=sharing" target="_blank" rel="noopener">
+            <span>📁 雲端硬碟教材</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- 2024 -->
+      <section class="card">
+        <div class="year-badge">2024</div>
+        <div class="card-content">
+          <div class="card-year">2024 NOBEL PRIZE</div>
+          <h2 class="card-title">MicroRNA 基因調控</h2>
+          <p class="card-desc">揭開轉錄後基因調控的全新維度，探討微小 RNA 如何控制信使 RNA 的活性，影響細胞分化與器官發育。</p>
+        </div>
+        <div class="card-actions">
+          <a class="btn-primary" href="https://froglssh.github.io/2024-nobel-microrna-page/" target="_blank" rel="noopener">
+            <span>📖 開啟教學網頁</span>
+          </a>
+          <a class="btn-secondary" href="https://drive.google.com/drive/folders/169URgC91Upjvy4tbrJ75p21VISnBrL1z?usp=sharing" target="_blank" rel="noopener">
+            <span>📁 雲端硬碟教材</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- 2023 -->
+      <section class="card">
+        <div class="year-badge">2023</div>
+        <div class="card-content">
+          <div class="card-year">2023 NOBEL PRIZE</div>
+          <h2 class="card-title">mRNA 疫苗技術</h2>
+          <p class="card-desc">解析核苷修飾技術如何降低免疫排斥反應，促成高效新冠肺炎疫苗開發，寫下現代免疫與傳染病防治史新頁。</p>
+        </div>
+        <div class="card-actions">
+          <a class="btn-primary" href="https://froglssh.github.io/2023-nobel-mrna-page/" target="_blank" rel="noopener">
+            <span>📖 開啟教學網頁</span>
+          </a>
+          <a class="btn-secondary" href="https://drive.google.com/drive/folders/1CwOpCvdng5yqfeiQ8vd_2Kc6FA4RXJlg?usp=sharing" target="_blank" rel="noopener">
+            <span>📁 雲端硬碟教材</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- 2022 -->
+      <section class="card">
+        <div class="year-badge">2022</div>
+        <div class="card-content">
+          <div class="card-year">2022 NOBEL PRIZE</div>
+          <h2 class="card-title">古人類基因組學</h2>
+          <p class="card-desc">解密尼安德塔人與丹尼索瓦人的古生物 DNA 序列，探尋現代智人起源、混血歷史以及演化遺傳的生理影響。</p>
+        </div>
+        <div class="card-actions">
+          <a class="btn-primary" href="https://froglssh.github.io/2022-nobel-paleogenomics-page/" target="_blank" rel="noopener">
+            <span>📖 開啟教學網頁</span>
+          </a>
+          <a class="btn-secondary" href="https://drive.google.com/drive/folders/1qf60x6B07bIXLjibYxQrQY60HjQtq5Mw?usp=sharing" target="_blank" rel="noopener">
+            <span>📁 雲端硬碟教材</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- 2021 -->
+      <section class="card">
+        <div class="year-badge">2021</div>
+        <div class="card-content">
+          <div class="card-year">2021 NOBEL PRIZE</div>
+          <h2 class="card-title">辣椒素與溫度受體</h2>
+          <p class="card-desc">發現人體如何透過 TRP 通道蛋白感知冷熱、物理觸覺與痛覺，開創感官神經科學及臨床慢性痛覺治療新紀元。</p>
+        </div>
+        <div class="card-actions">
+          <a class="btn-primary" href="https://froglssh.github.io/2021-nobel-somatosensation-page/" target="_blank" rel="noopener">
+            <span>📖 開啟教學網頁</span>
+          </a>
+          <a class="btn-secondary" href="https://drive.google.com/drive/folders/1PbI-dMWFuFIel3NiJeVcOE4BEHMzPObv?usp=sharing" target="_blank" rel="noopener">
+            <span>📁 雲端硬碟教材</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- 2020 -->
+      <section class="card">
+        <div class="year-badge">2020</div>
+        <div class="card-content">
+          <div class="card-year">2020 NOBEL PRIZE</div>
+          <h2 class="card-title">C 型肝炎病毒的發現</h2>
+          <p class="card-desc">從病毒篩檢、鑑定到最終克敵制勝，探討 HCV 的發現如何防範輸血後肝炎，拯救全球數百萬人性命。</p>
+        </div>
+        <div class="card-actions">
+          <a class="btn-primary" href="https://froglssh.github.io/2020-nobel-hep-c-page/" target="_blank" rel="noopener">
+            <span>📖 開啟教學網頁</span>
+          </a>
+          <a class="btn-secondary" href="https://drive.google.com/drive/folders/1payIBfuCcFUkaf_31B5wDbtxBjSaA4_L?usp=sharing" target="_blank" rel="noopener">
+            <span>📁 雲端硬碟教材</span>
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>製作者：臺北市麗山高中 林獻升老師 &copy; 2026</p>
+      <p class="copyright">學術使用 ‧ 素養導向生物學科教學門戶網站</p>
+    </div>
+  </footer>
+
+</body>
+</html>
